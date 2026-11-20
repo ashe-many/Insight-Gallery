@@ -51,6 +51,7 @@
   figcaption { margin-top: 6px; font-size: 14px; color: var(--muted); }
   .thumbs img { width: 64px; height: 64px; }
   .mid img { width: 128px; height: 128px; }
+  .eq { overflow-x: auto; overflow-y: hidden; margin: 8px 0; }
   ol.refs { margin: 6px 0 0; padding-left: 26px; font-size: 14px; color: var(--muted); }
   ol.refs li { margin: 3px 0; overflow-wrap: anywhere; }
   a { color: var(--accent); }
@@ -225,16 +226,33 @@
 </details>
 
 <details class="part" id="gps-driving">
-<summary><span class="num">8</span><span class="ttl"><b>Energy-efficient driving styles from GPS logs alone</b><span class="tags"><span>clustering</span><span>feature design</span><span>noisy real-world data</span></span></span><span class="chev" aria-hidden="true">▶</span></summary>
+<summary><span class="num">8</span><span class="ttl"><b>Energy-efficient driving styles from GPS logs alone</b><span class="tags"><span>clustering</span><span>feature design</span><span>physics</span><span>noisy real-world data</span></span></span><span class="chev" aria-hidden="true">▶</span></summary>
 <div class="body">
 <p>The driving style has a large effect on fuel consumption. A hybrid car that knows how its driver drives could use its electric engine more efficiently. But special sensors are expensive, so we asked: can we tell calm from racy drivers using only GPS positions, which every navigation system records [1]?</p>
 <p>From positions over time we get velocity, acceleration and the <i>jerk</i>, the change of acceleration. A calm driver changes speed smoothly, a racy driver abruptly. The difficulty is that real GPS logs are noisy, incomplete and inconsistent, and a single bad position creates a huge jerk:</p>
 <figure><img src="Figs/GPS_patterns.png" width="760" loading="lazy" alt="Velocity, acceleration and jerk of a calm driver, a racy driver and a noisy GPS pattern">
 <figcaption>Velocity, acceleration and jerk for a calm driver, a racy driver and a noisy movement pattern. Note the very different y-axis ranges.</figcaption></figure>
-<p>We therefore designed a single robust feature $\omega$, based on an exponential of the jerk. Compared with the mean, the standard deviation and an earlier jerk method [2], $\omega$ rises smoothly over all patterns and ends in a clear elbow, which marks the noisy patterns:</p>
+<h3>Why the jerk? A short derivation</h3>
+<p>The engine turns fuel into mechanical work $W$ along a distance $d$. With the combustion efficiency $p$, the car mass $m_c$ and Newton's law $W = F\,d$, $F = m_c\,\bar a$, the fuel consumption is</p>
+<div class="eq">$$f_c = p\,\frac{W}{d} = p\,m_c\,\bar a .$$</div>
+<p>Braking does not give fuel back, so over a time frame $[0,T]$</p>
+<div class="eq">$$f_c \;\sim\; \int_0^T |W(t)|\,dt \;\sim\; \int_0^T |\ddot x(t)|\,dt ,$$</div>
+<p>which is smallest for $\ddot x = 0$, i.e. constant velocity. Friction $F_{\mathrm{friction}} = \eta\, m_c\, g$ needs a constant acceleration, and the air resistance $F_{\mathrm{air}} \sim \dot x^2$ is minimised by</p>
+<div class="eq">$$\min_x \int_0^T \dot x(t)^2\,dt \quad \text{s.t.} \quad x(0)=s_0,\; x(T)=s_T ,$$</div>
+<p>whose optimality condition $2\dot v = 0$ again asks for constant velocity. So the fuel-saving way to drive is a constant acceleration, $\dot a = \dddot x = 0$: an energy-efficient driver keeps the <i>jerk</i> $|\dddot x|$ small.</p>
+<h3>The robust feature $\omega$</h3>
+<p>For each movement pattern $\{T,P\}$ (time stamps and positions) we compute the jerk values $j_{\{T,P\}}$ by finite differences and define</p>
+<div class="eq">$$\omega\big(\{T,P\}\big) = \exp\!\left(-\frac{1}{\sqrt{\sigma\big(j_{\{T,P\}}\big)}}\right),$$</div>
+<p>where $\sigma$ is the standard deviation. Calm drivers with small jerk fluctuations get values near $0$; the square root spreads them apart. Racy drivers and patterns with a bad GPS position have huge fluctuations, and the exponential pushes them towards $1$. Compared with the mean, the standard deviation and an earlier jerk method [2], $\omega$ rises smoothly over all patterns and ends in a clear elbow, which marks the noisy patterns:</p>
 <figure><img src="Figs/GPS_features.png" width="700" loading="lazy" alt="Sorted feature values of four features over about 3200 movement patterns">
 <figcaption>Sorted feature values over all movement patterns. Grey: our feature $\omega$.</figcaption></figure>
-<p>We tested it on the T-Drive data of more than 10,000 Beijing taxis [3]: 17 million GPS logs and about 9 million kilometres. After preprocessing, this gave 3225 movement patterns in the city centre and 106 on a freeway. Agglomerative hierarchical clustering with an L-curve heuristic chose four clusters, confirmed by silhouette indices.</p>
+<p>We tested it on the T-Drive data of more than 10,000 Beijing taxis [3]: 17 million GPS logs and about 9 million kilometres. After preprocessing, this gave 3225 movement patterns in the city centre and 106 on a freeway.</p>
+<h3>Clustering and choosing the number of clusters</h3>
+<p>We cluster the $\omega$ values bottom-up with agglomerative hierarchical clustering, merging at each step the pair of clusters $C_a, C_b$ with the smallest increase in squared error (Ward's criterion). To choose the number of clusters $M$, we follow the within-cluster sum of squares</p>
+<div class="eq">$$\mathrm{WCSS}(M) = \sum_{a=1}^{M} \sum_{x \in C_a} \lVert x - c_a \rVert_2^2 ,$$</div>
+<p>with centroids $c_a$, and take the smallest $M$ after which WCSS no longer drops much (L-curve heuristic). This gave $M = 4$. We confirmed it with the silhouette index of each member $\omega_i$,</p>
+<div class="eq">$$SI_i = \frac{b_i - a_i}{\max(a_i,\, b_i)} \in [-1, 1],$$</div>
+<p>where $a_i$ is the mean distance to the members of its own cluster and $b_i$ the mean distance to the nearest other cluster. With four clusters almost all indices are positive; the negative ones sit compactly in cluster 4 with the noisy patterns.</p>
 <figure><img src="Figs/GPS_clusters.png" width="460" loading="lazy" alt="Box plot of feature values in four clusters for freeway and central area">
 <figcaption>Cluster 1: energy-saving drivers. Clusters 2 and 3: average drivers. Cluster 4: high fuel consumption and, in the city centre, all the noisy patterns.</figcaption></figure>
 <p><b>Result:</b> GPS logs alone are enough to separate driving styles by energy use, and the noise lands in its own cluster. The more data, the cleaner the separation, which fits an industrial setting with navigation systems.</p>
@@ -276,7 +294,7 @@
   openHash();
   addEventListener('DOMContentLoaded', () => {
     if (window.renderMathInElement) renderMathInElement(document.body, {
-      delimiters: [{ left: '$', right: '$', display: false }], throwOnError: false
+      delimiters: [{ left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }], throwOnError: false
     });
   });
 </script>
