@@ -116,7 +116,7 @@
 </details>
 
 <details class="part" id="temperature">
-<summary><span class="num">3</span><span class="ttl"><b>Temperature prediction in 3D printing</b><span class="tags"><span>laser powder-bed fusion</span><span>TSP</span><span>PDE simulation</span></span></span><span class="chev" aria-hidden="true">▶</span></summary>
+<summary><span class="num">3</span><span class="ttl"><b>Temperature prediction in 3D printing</b><span class="tags"><span>laser powder-bed fusion</span><span>TSP</span><span>PDE simulation</span><span>LSTM</span></span></span><span class="chev" aria-hidden="true">▶</span></summary>
 <div class="body">
 <p>Our aim was to simulate the movement of the laser nozzle during printing in laser powder-bed fusion (LPBF) [1]. A controlled nozzle movement lets us predict the temperature gradient during printing, so that the final product does not deform because of an uneven temperature distribution across the printing board.</p>
 <p>To steer the nozzle, one can first use a predefined trajectory: row-wise, zig-zag or square-based, as shown below.</p>
@@ -128,9 +128,19 @@
 <p>Below are a few instances where TSP decides the $5$ adjacent movements of the nozzle.</p>
 <figure><div class="row"><img src="Figs/_TSPTemp-1.png" width="280" loading="lazy" alt="TSP temperature map 1"><img src="Figs/_TSPTemp-2.png" width="280" loading="lazy" alt="TSP temperature map 2"><img src="Figs/_TSPTemp-3.png" width="280" loading="lazy" alt="TSP temperature map 3"></div>
 <figcaption>All temperatures are in Kelvin, computed with the MATLAB PDE Toolbox.</figcaption></figure>
+<h3>Predicting the temperature with an LSTM</h3>
+<p>The simulation tells us the temperature only after it is computed. To act earlier, we trained a neural network that predicts how the temperature gradient will change before the laser moves [2]. We split the plate into 4×4 sub-domains and describe each heat map by the temperature gradient in each sub-domain. A stack of three LSTM layers reads the last 14 maps and forecasts the next one.</p>
+<figure><div class="row"><img src="Figs/LSTM_stack.jpg" width="190" loading="lazy" alt="Stack of three LSTM layers followed by a fully connected layer"><img src="Figs/LSTM_rmse.jpg" width="330" loading="lazy" alt="RMSE of the prediction for each nozzle move"></div>
+<figcaption>Left: the three-layer LSTM stack. Right: prediction error (RMSE) for each nozzle move; the crosses mark the 25th, 50th, 75th and 100th percentiles.</figcaption></figure>
+<p>The error stays low for almost all nozzle moves: the 25th, 50th and 75th percentiles are 0.009, 0.014 and 0.021, with a few outliers up to 0.109. Below, the forecast (black) follows the true gradient values (pink) closely:</p>
+<figure><img src="Figs/LSTM_forecast.png" width="760" loading="lazy" alt="Observed gradient history in pink and forecast in black">
+<figcaption>Gradient history of the last 14 maps (pink) and the forecast for the next map (black), RMSE = 0.009.</figcaption></figure>
+<p>Together, the FEM simulation and the LSTM form a printing tool: it plans the laser path and predicts the temperature online, so a bad print can be stopped early, before expensive real experiments. Supported by the European Regional Development Fund (EFRE 85037495).</p>
+<p class="lic">Figures from [2].</p>
 <h3>References</h3>
 <ol class="refs">
 <li>A. Strauch, C. Hardes, A. Röttger, V. Uhlenwinkel, A. Baqerzadeh Chehreh, W. Theisen, F. Walther, H. Zoch. Laser additive manufacturing of hot work tool steel by means of a starting powder containing partly spherical pure elements and ferroalloys. Procedia CIRP 94, pp. 46–51, 2020.</li>
+<li>A. Mansouri Yarahmadi, M. Breuß, C. Hartmann. Long Short-Term Memory Neural Network for Temperature Prediction in Laser Powder Bed Additive Manufacturing. Intelligent Systems and Applications, pp. 119–132, Springer, 2022. <a href="https://arxiv.org/abs/2301.12904" target="_blank" rel="noopener">arXiv:2301.12904</a></li>
 </ol>
 </div>
 </details>
