@@ -214,8 +214,32 @@
 </div>
 </details>
 
+<details class="part" id="gps-driving">
+<summary><span class="num">8</span><span class="ttl"><b>Energy-efficient driving styles from GPS logs alone</b><span class="tags"><span>clustering</span><span>feature design</span><span>noisy real-world data</span></span></span><span class="chev" aria-hidden="true">▶</span></summary>
+<div class="body">
+<p>The driving style has a large effect on fuel consumption. A hybrid car that knows how its driver drives could use its electric engine more efficiently. But special sensors are expensive, so we asked: can we tell calm from racy drivers using only GPS positions, which every navigation system records [1]?</p>
+<p>From positions over time we get velocity, acceleration and the <i>jerk</i>, the change of acceleration. A calm driver changes speed smoothly, a racy driver abruptly. The difficulty is that real GPS logs are noisy, incomplete and inconsistent, and a single bad position creates a huge jerk:</p>
+<figure><img src="Figs/GPS_patterns.png" width="760" loading="lazy" alt="Velocity, acceleration and jerk of a calm driver, a racy driver and a noisy GPS pattern">
+<figcaption>Velocity, acceleration and jerk for a calm driver, a racy driver and a noisy movement pattern. Note the very different y-axis ranges.</figcaption></figure>
+<p>We therefore designed a single robust feature $\omega$, based on an exponential of the jerk. Compared with the mean, the standard deviation and an earlier jerk method [2], $\omega$ rises smoothly over all patterns and ends in a clear elbow, which marks the noisy patterns:</p>
+<figure><img src="Figs/GPS_features.png" width="700" loading="lazy" alt="Sorted feature values of four features over about 3200 movement patterns">
+<figcaption>Sorted feature values over all movement patterns. Grey: our feature $\omega$.</figcaption></figure>
+<p>We tested it on the T-Drive data of more than 10,000 Beijing taxis [3]: 17 million GPS logs and about 9 million kilometres. After preprocessing, this gave 3225 movement patterns in the city centre and 106 on a freeway. Agglomerative hierarchical clustering with an L-curve heuristic chose four clusters, confirmed by silhouette indices.</p>
+<figure><img src="Figs/GPS_clusters.png" width="460" loading="lazy" alt="Box plot of feature values in four clusters for freeway and central area">
+<figcaption>Cluster 1: energy-saving drivers. Clusters 2 and 3: average drivers. Cluster 4: high fuel consumption and, in the city centre, all the noisy patterns.</figcaption></figure>
+<p><b>Result:</b> GPS logs alone are enough to separate driving styles by energy use, and the noise lands in its own cluster. The more data, the cleaner the separation, which fits an industrial setting with navigation systems.</p>
+<p class="lic">Figures from [1]. Funded by the German Federal Ministry of Education and Research (RESY, 05M13ICC).</p>
+<h3>References</h3>
+<ol class="refs">
+<li>M. Breuß, L. Hoeltgen, A. Sharifi Boroujerdi, A. Mansouri Yarahmadi. Highly Robust Clustering of GPS Driver Data for Energy Efficient Driving Style Modelling. arXiv:1610.02815, 2016. <a href="https://arxiv.org/abs/1610.02815" target="_blank" rel="noopener">arxiv.org/abs/1610.02815</a></li>
+<li>Y. L. Murphey, R. Milton, L. Kiliaris. Driver's style classification using jerk analysis. IEEE Workshop on Computational Intelligence in Vehicles and Vehicular Systems, pp. 23–28, 2009.</li>
+<li>J. Yuan, Y. Zheng, C. Zhang, W. Xie, X. Xie, Y. Huang. T-Drive: Driving directions based on taxi trajectories. ACM SIGSPATIAL GIS, pp. 99–108, 2010.</li>
+</ol>
+</div>
+</details>
+
 <details class="part" id="email">
-<summary><span class="num">8</span><span class="ttl"><b>E-mail summarization with LLMs and C#</b><span class="tags"><span>LLM</span><span>Ollama</span><span>C# GUI</span></span></span><span class="chev" aria-hidden="true">▶</span></summary>
+<summary><span class="num">9</span><span class="ttl"><b>E-mail summarization with LLMs and C#</b><span class="tags"><span>LLM</span><span>Ollama</span><span>C# GUI</span></span></span><span class="chev" aria-hidden="true">▶</span></summary>
 <div class="body">
 <p>We used the Enron e-mail dataset, which contains about 500,000 e-mails written by employees of the Enron Corporation [1]. We developed a GUI in C# and used Ollama in the background to run open-source large language models. The user sees a list of e-mails and can let an LLM write a short summary of each e-mail body.</p>
 <figure><img src="Figs/AutoEmail-2.png" width="800" loading="lazy" alt="C# GUI with e-mail list and LLM summary"></figure>

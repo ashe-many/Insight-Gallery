@@ -11,6 +11,7 @@ My projects in computer vision, 3D printing, remote sensing and LLMs.
 5. Cloud detection in Sentinel-2 images
 6. YOLO in an Industry 4.0 model factory
 7. The convex / concave ambiguity in shape from shading
-8. E-mail summarization with LLMs and C#
+8. Energy-efficient driving styles from GPS logs alone
+9. E-mail summarization with LLMs and C#
 
 All texts and figures are in [index.html](index.html); the figures are in [Figs/](Figs/).
