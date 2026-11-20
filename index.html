@@ -195,13 +195,21 @@
 </details>
 
 <details class="part" id="sfs">
-<summary><span class="num">7</span><span class="ttl"><b>The convex / concave ambiguity in shape from shading</b><span class="tags"><span>3D reconstruction</span><span>PDEs</span></span></span><span class="chev" aria-hidden="true">▶</span></summary>
+<summary><span class="num">7</span><span class="ttl"><b>The convex / concave ambiguity in shape from shading</b><span class="tags"><span>3D reconstruction</span><span>PDEs</span><span>eikonal equation</span></span></span><span class="chev" aria-hidden="true">▶</span></summary>
 <div class="body">
+<p>Shape from shading (SFS) recovers the 3D shape of a surface from a single image, using only how bright each point appears. In the classic setup of Horn, with an orthographic camera and light from far away, there is a famous problem: a mound seen from above can look exactly like a cavity of the same form.</p>
 <figure><div class="row"><img src="Figs/22.png.png" width="400" loading="lazy" alt="Convex hemisphere"><img src="Figs/23.png" width="400" loading="lazy" alt="Concave hemisphere"></div></figure>
-<p>The convex hemisphere $u(x,y)=-\sqrt{R^2-x^2-y^2}$ (left) and the concave hemisphere $u(x,y)=+\sqrt{R^2-x^2-y^2}$ (right), each with an arbitrarily chosen point $\left(x_1,y_1,u(x_1,y_1)\right)$ in the third quarter on its surface. An orthographic camera looks from infinity along the positive $z$ axis and observes the same angle $\theta$ between the reflected light and the corresponding normals $(\nabla u, 1)$ at the chosen points. If the surface is Lambertian, the reflected irradiance from the convex and the concave surface at $\left(x_1,y_1,u(x_1,y_1)\right)$ is the same, so it is ambiguous which geometry the surface has at that point [1].</p>
+<p>The convex hemisphere $u(x,y)=-\sqrt{R^2-x^2-y^2}$ (left) and the concave hemisphere $u(x,y)=+\sqrt{R^2-x^2-y^2}$ (right), each with an arbitrarily chosen point $\left(x_1,y_1,u(x_1,y_1)\right)$ in the third quarter on its surface. An orthographic camera looks from infinity along the positive $z$ axis and observes the same angle $\theta$ between the reflected light and the corresponding normals $(\nabla u, 1)$ at the chosen points. If the surface is Lambertian, the reflected irradiance from the convex and the concave surface at $\left(x_1,y_1,u(x_1,y_1)\right)$ is the same, so it is ambiguous which geometry the surface has at that point.</p>
+<h3>Does a real camera remove the ambiguity?</h3>
+<p>Real cameras use perspective projection, and perspective SFS models were expected to be better posed. We showed for the first time that a perspective model can have the same ambiguity [1]. We use a pinhole camera, a Lambertian surface and a light source at the projection centre. Written in spherical coordinates, the perspective SFS equation takes exactly the same form as Horn's classic eikonal equation, so the classic mechanism of the ambiguity carries over.</p>
+<p>To show it, we start from a concave, hat-shaped curve (black), compute its brightness signal, and solve the eikonal equation numerically with that signal as input. The solver returns a different, convex curve (red):</p>
+<figure><div class="row"><img src="Figs/SFS_PSFS_curves.png" width="340" loading="lazy" alt="Concave curve in black and computed convex curve in red, polar plot"><img src="Figs/SFS_PSFS_irradiance.png" width="340" loading="lazy" alt="Two almost identical irradiance signals, polar plot"></div>
+<figcaption>Left: the original concave curve (black) and the computed convex curve (red). Right: their brightness signals, solid black and dashed, are nearly identical.</figcaption></figure>
+<p>The two curves have nearly the same brightness, so the image alone cannot tell them apart. A free shift of the radius gives even more convex solutions with the same signal. The construction extends from signals to full images; the next step is to find ways to resolve the ambiguity.</p>
+<p class="lic">Figures from [1].</p>
 <h3>References</h3>
 <ol class="refs">
-<li>M. Breuß, A. Mansouri Yarahmadi, D. W. Cunningham. The Convex-Concave Ambiguity in Perspective Shape from Shading. Proceedings of the OAGM Workshop on Medical Image Analysis, 2018.</li>
+<li>M. Breuß, A. Mansouri Yarahmadi, D. W. Cunningham. The Convex-Concave Ambiguity in Perspective Shape from Shading. Proceedings of the OAGM Workshop 2018, pp. 57–63. <a href="https://doi.org/10.3217/978-3-85125-603-1-13" target="_blank" rel="noopener">doi:10.3217/978-3-85125-603-1-13</a></li>
 </ol>
 </div>
 </details>
