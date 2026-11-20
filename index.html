@@ -211,20 +211,12 @@
 </details>
 
 <details class="part" id="gps-driving">
-<summary><span class="num">7</span><span class="ttl"><b>Energy-efficient driving styles from GPS logs alone</b><span class="tags"><span>clustering</span><span>feature design</span><span>physics</span><span>noisy real-world data</span></span></span><span class="chev" aria-hidden="true">▶</span></summary>
+<summary><span class="num">7</span><span class="ttl"><b>Energy-efficient driving styles from GPS logs alone</b><span class="tags"><span>clustering</span><span>feature design</span><span>noisy real-world data</span></span></span><span class="chev" aria-hidden="true">▶</span></summary>
 <div class="body">
 <p>The driving style has a large effect on fuel consumption. A hybrid car that knows how its driver drives could use its electric engine more efficiently. But special sensors are expensive, so we asked: can we tell calm from racy drivers using only GPS positions, which every navigation system records [1]?</p>
 <p>From positions over time we get velocity, acceleration and the <i>jerk</i>, the change of acceleration. A calm driver changes speed smoothly, a racy driver abruptly. The difficulty is that real GPS logs are noisy, incomplete and inconsistent, and a single bad position creates a huge jerk:</p>
 <figure><img src="Figs/GPS_patterns.png" width="760" loading="lazy" alt="Velocity, acceleration and jerk of a calm driver, a racy driver and a noisy GPS pattern">
 <figcaption>Velocity, acceleration and jerk for a calm driver, a racy driver and a noisy movement pattern. Note the very different y-axis ranges.</figcaption></figure>
-<h3>Why the jerk? A short derivation</h3>
-<p>The engine turns fuel into mechanical work $W$ along a distance $d$. With the combustion efficiency $p$, the car mass $m_c$ and Newton's law $W = F\,d$, $F = m_c\,\bar a$, the fuel consumption is</p>
-<div class="eq">$$f_c = p\,\frac{W}{d} = p\,m_c\,\bar a .$$</div>
-<p>Braking does not give fuel back, so over a time frame $[0,T]$</p>
-<div class="eq">$$f_c \;\sim\; \int_0^T |W(t)|\,dt \;\sim\; \int_0^T |\ddot x(t)|\,dt ,$$</div>
-<p>which is smallest for $\ddot x = 0$, i.e. constant velocity. Friction $F_{\mathrm{friction}} = \eta\, m_c\, g$ needs a constant acceleration, and the air resistance $F_{\mathrm{air}} \sim \dot x^2$ is minimised by</p>
-<div class="eq">$$\min_x \int_0^T \dot x(t)^2\,dt \quad \text{s.t.} \quad x(0)=s_0,\; x(T)=s_T ,$$</div>
-<p>whose optimality condition $2\dot v = 0$ again asks for constant velocity. So the fuel-saving way to drive is a constant acceleration, $\dot a = \overset{\cdot\cdot\cdot}{x} = 0$: an energy-efficient driver keeps the <i>jerk</i> $|\overset{\cdot\cdot\cdot}{x}|$ small.</p>
 <h3>The robust feature $\omega$</h3>
 <p>For each movement pattern $\{T,P\}$ (time stamps and positions) we compute the jerk values $j_{\{T,P\}}$ by finite differences and define</p>
 <div class="eq">$$\omega\big(\{T,P\}\big) = \exp\!\left(-\frac{1}{\sqrt{\sigma\big(j_{\{T,P\}}\big)}}\right),$$</div>
