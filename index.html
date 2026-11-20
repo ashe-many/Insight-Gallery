@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Insight Gallery</title>
+<meta name="description" content="Projects by Ashkan Mansouri Yarahmadi: computer vision, 3D printing, remote sensing and LLMs.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<style>
+  :root {
+    --bg: #e4dcc0; --canvas: #f7f3e6; --fg: #2f2a1c; --muted: #675d43; --line: #c9bc95;
+    --accent: #5f6b1f; --accent-soft: #ece9cf; --group: #efe8d2;
+    --hl: #f9e27a; --hl-line: #d4b106; --hl-fg: #3d3200;
+    --sans: "Source Sans 3", "Segoe UI", system-ui, sans-serif; --mono: "IBM Plex Mono", ui-monospace, monospace;
+    color-scheme: light;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 17px/1.6 var(--sans); }
+  .wrap { max-width: 920px; margin: 0 auto; padding: 28px 16px 64px; }
+  header { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: flex-end; justify-content: space-between; margin-bottom: 18px; }
+  h1 { margin: 0; font-size: 34px; line-height: 1.15; letter-spacing: -.01em; }
+  .sub { margin: 6px 0 0; color: var(--muted); }
+  .back { font-size: 15px; color: var(--accent); text-decoration: none; font-weight: 600; }
+  .back:hover { text-decoration: underline; }
+  .bar { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 14px; }
+  .bar button { font: 600 14px var(--sans); color: var(--hl-fg); background: var(--hl); border: 1px solid var(--hl-line);
+    border-radius: 999px; padding: 5px 14px; cursor: pointer; }
+  .bar button:hover { filter: brightness(.97); }
+  details.part { background: var(--canvas); border: 1px solid var(--line); border-radius: 12px; margin: 0 0 10px; overflow: hidden; }
+  details.part > summary { list-style: none; cursor: pointer; display: flex; gap: 14px; align-items: center; padding: 14px 18px; }
+  details.part > summary::-webkit-details-marker { display: none; }
+  details.part > summary:hover { background: var(--group); }
+  details.part[open] > summary { border-bottom: 1px solid var(--line); background: var(--group); }
+  .num { flex: none; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center;
+    background: var(--accent); color: #fff; font: 600 14px var(--mono); }
+  .ttl { flex: 1; min-width: 0; }
+  .ttl b { display: block; font-size: 19px; line-height: 1.3; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+  .tags span { font: 12px var(--mono); color: var(--muted); background: var(--accent-soft); border: 1px solid var(--line); border-radius: 6px; padding: 1px 7px; }
+  .chev { flex: none; color: var(--muted); transition: transform .2s; }
+  details.part[open] .chev { transform: rotate(90deg); }
+  .body { padding: 6px 22px 20px; }
+  .body h3 { font-size: 17px; margin: 20px 0 4px; }
+  .body p { margin: 10px 0; }
+  figure { margin: 16px 0; text-align: center; }
+  figure .row { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  figure img { max-width: 100%; height: auto; border-radius: 6px; background: #fff; }
+  figcaption { margin-top: 6px; font-size: 14px; color: var(--muted); }
+  .thumbs img { width: 64px; height: 64px; }
+  .mid img { width: 128px; height: 128px; }
+  ol.refs { margin: 6px 0 0; padding-left: 26px; font-size: 14px; color: var(--muted); }
+  ol.refs li { margin: 3px 0; overflow-wrap: anywhere; }
+  a { color: var(--accent); }
+  .lic { font-size: 13px; color: var(--muted); }
+  footer { margin-top: 26px; font-size: 14px; color: var(--muted); text-align: center; }
+  @media (max-width: 560px) { h1 { font-size: 28px; } .body { padding: 4px 14px 16px; } details.part > summary { padding: 12px 14px; gap: 10px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div>
+    <h1>Insight Gallery</h1>
+    <p class="sub">Projects I enjoy thinking about and building. Click a part to open it.</p>
+  </div>
+  <a class="back" href="https://ashe-many.github.io">← Main page</a>
+</header>
+
+<div class="bar">
+  <button type="button" id="openAll">Open all</button>
+  <button type="button" id="closeAll">Close all</button>
+</div>
+
+<details class="part" id="e-lake">
+<summary><span class="num">1</span><span class="ttl"><b>E-Lake: watching swimmers with a drone</b><span class="tags"><span>3D simulation</span><span>Mask R-CNN</span><span>Qt / C++</span></span></span><span class="chev" aria-hidden="true">▶</span></summary>
+<div class="body">
+<p>Let us imagine a stormy day where swimmers decide to swim in a lake. We need to watch them in case they need help. We do it with a drone that always locates the swimmers and checks if their behaviour is normal or if they need help.</p>
+<p>But data collection is hard here. Finding a stormy lake and people who are willing to swim in it is not always possible. So let us build an electronic lake (E-Lake)! First we need a texture of stormy water. We use a free texture file (thanks to Jorge Vasconez for making it available):</p>
+<figure><img src="Figs/Water.jpg" width="512" loading="lazy" alt="Stormy water texture"></figure>
+<p>Next we need a few people to swim in our lake. We take them from the animated figures of [1], which are free with an account.</p>
+<figure><img src="Figs/swim.gif" width="160" loading="lazy" alt="Animated swimmer"></figure>
+<p>This is the result of embedding the animated swimmers into a 3D model of E-Lake using [2]:</p>
+<figure><img src="Figs/V-2.gif" width="512" loading="lazy" alt="Swimmers in the 3D E-Lake"></figure>
+<p>With [3] we see that our swimmers are sometimes falsely classified as kite (green), bird (blue) and also person (white). This shows that the Mask R-CNN pre-trained on the MS COCO dataset [4] fails to watch the swimmers in our E-Lake.</p>
+<h3>Qt GUI</h3>
+<p>To make the whole pipeline a product, we also train YOLO models to see if they are faster than Mask R-CNN. Below is the GUI, developed with Qt and C++.</p>
+<figure><img src="Figs/GUI.png" width="560" loading="lazy" alt="Qt GUI of the swimmer detection"></figure>
+<h3>Future plan</h3>
+<p>We train YOLO models and Mask R-CNN to compare tracking quality and the speed of swimmer localisation and classification while they enjoy our E-Lake. In a real scenario, a drone runs the model, flies over a real lake and watches if swimmers need help or move in a suspicious pattern. This is critical to keep swimmers from drowning.</p>
+<h3>References</h3>
+<ol class="refs">
+<li><a href="https://www.mixamo.com" target="_blank" rel="noopener">www.mixamo.com</a></li>
+<li><a href="https://clara.io/" target="_blank" rel="noopener">clara.io</a></li>
+<li>K. He, G. Gkioxari, P. Dollár, R. Girshick. Mask R-CNN. arXiv, 2017. <a href="https://doi.org/10.48550/ARXIV.1703.06870" target="_blank" rel="noopener">doi:10.48550/ARXIV.1703.06870</a></li>
+<li><a href="https://cocodataset.org/#home" target="_blank" rel="noopener">cocodataset.org</a></li>
+</ol>
+</div>
+</details>
+
+<details class="part" id="stylegan">
+<summary><span class="num">2</span><span class="ttl"><b>StyleGAN2 swimmers: more training data</b><span class="tags"><span>StyleGAN2</span><span>data augmentation</span></span></span><span class="chev" aria-hidden="true">▶</span></summary>
+<div class="body">
+<p>Another part of my work is to enlarge existing datasets, because collecting images of swimmers is technically hard. One solution is to use StyleGAN2 [1] to enlarge the Swimmer dataset [2] from Kaggle. Below are synthetic samples that show the swimming styles realistically: back stroke, breast stroke, free style and butterfly.</p>
+<figure><img src="Figs/fakes000500.png" width="760" loading="lazy" alt="Grid of StyleGAN2 synthetic swimmers"></figure>
+<p>A small set of original images was used to make the synthetic images above:</p>
+<figure><div class="row mid"><img src="Figs/img00000000.png" loading="lazy" alt="Original swimmer 1"><img src="Figs/img00000003.png" loading="lazy" alt="Original swimmer 2"><img src="Figs/img00000006.png" loading="lazy" alt="Original swimmer 3"><img src="Figs/img00000009.png" loading="lazy" alt="Original swimmer 4"></div></figure>
+<h3>References</h3>
+<ol class="refs">
+<li><a href="https://github.com/NVlabs/stylegan2" target="_blank" rel="noopener">github.com/NVlabs/stylegan2</a></li>
+<li><a href="https://www.kaggle.com/datasets/3122f8d0287f6094b28d66e36b216b3a278eae858b6c7cb10f821010825397a2" target="_blank" rel="noopener">Swimmer dataset on Kaggle</a></li>
+</ol>
+</div>
+</details>
+
+<details class="part" id="temperature">
+<summary><span class="num">3</span><span class="ttl"><b>Temperature prediction in 3D printing</b><span class="tags"><span>laser powder-bed fusion</span><span>TSP</span><span>PDE simulation</span></span></span><span class="chev" aria-hidden="true">▶</span></summary>
+<div class="body">
+<p>Our aim was to simulate the movement of the laser nozzle during printing in laser powder-bed fusion (LPBF) [1]. A controlled nozzle movement lets us predict the temperature gradient during printing, so that the final product does not deform because of an uneven temperature distribution across the printing board.</p>
+<p>To steer the nozzle, one can first use a predefined trajectory: row-wise, zig-zag or square-based, as shown below.</p>
+<figure><img src="Figs/Trajs.png" width="720" loading="lazy" alt="Row-wise, zig-zag and square-based trajectories"></figure>
+<p>A better solution, which we adopted, applies the travelling salesman problem (TSP) to minimise a cost function based on the temperature gradient:</p>
+<figure><img src="Figs/Cost.png" width="560" loading="lazy" alt="Cost function"></figure>
+<p>Here $u_m$ and $\nabla u_m$ are the temperature and its gradient for the $m$-th movement of the nozzle, and $u_g$ is the desired temperature on a sub-area of the printing domain. We show that TSP gives an optimal cost value compared to the predefined trajectories:</p>
+<figure><img src="Figs/CompareCosts.png" width="420" loading="lazy" alt="Cost comparison of trajectories"></figure>
+<p>Below are a few instances where TSP decides the $5$ adjacent movements of the nozzle.</p>
+<figure><div class="row"><img src="Figs/_TSPTemp-1.png" width="280" loading="lazy" alt="TSP temperature map 1"><img src="Figs/_TSPTemp-2.png" width="280" loading="lazy" alt="TSP temperature map 2"><img src="Figs/_TSPTemp-3.png" width="280" loading="lazy" alt="TSP temperature map 3"></div>
+<figcaption>All temperatures are in Kelvin, computed with the MATLAB PDE Toolbox.</figcaption></figure>
+<h3>References</h3>
+<ol class="refs">
+<li>A. Strauch, C. Hardes, A. Röttger, V. Uhlenwinkel, A. Baqerzadeh Chehreh, W. Theisen, F. Walther, H. Zoch. Laser additive manufacturing of hot work tool steel by means of a starting powder containing partly spherical pure elements and ferroalloys. Procedia CIRP 94, pp. 46–51, 2020.</li>
+</ol>
+</div>
+</details>
+
+<details class="part" id="skeleton">
+<summary><span class="num">4</span><span class="ttl"><b>Stiffer 3D-printed parts by Hamilton-Jacobi skeletonization</b><span class="tags"><span>geometry</span><span>skeletons</span><span>FEM</span><span>metal printing</span></span></span><span class="chev" aria-hidden="true">▶</span></summary>
+<div class="body">
+<p>How can we make a printed part stiffer without designing the inner ribs by hand? Our idea is to let the geometry of the shape decide. We compute the distance of each pixel to the boundary and take the Hamilton-Jacobi skeleton of the shape [1, 3], i.e. the thin lines in the middle of the shape. Merging this skeleton with the shape boundary gives a printable support structure. The method is practically parameter-free [2].</p>
+<figure><img src="Figs/HJSkel_steps.png" width="420" loading="lazy" alt="Shape, distance map, skeleton and printable structure">
+<figcaption>(a) A shape, (b) its distance map (bright = far from the boundary), (c) its skeleton, (d) the printable structure (skeleton + boundary).</figcaption></figure>
+<p>We applied it to a corner knot of a machine frame. FEM simulation in Abaqus showed that the knot works like a linear axis with a spring: it carries 100 N in x and y without plastic deformation, while it stays almost fixed in the guiding direction.</p>
+<figure><div class="row"><img src="Figs/HJSkel_structure.png" width="320" loading="lazy" alt="Computed rib structure of the corner knot"><img src="Figs/HJSkel_printed.png" width="320" loading="lazy" alt="The corner knot printed in metal"></div>
+<figcaption>Left: the computed rib structure. Right: the same knot printed in metal.</figcaption></figure>
+<p class="lic">Figures from [2], open access under the <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="noopener">CC BY-NC-ND 4.0</a> license.</p>
+<h3>References</h3>
+<ol class="refs">
+<li>K. Siddiqi, S. Bouix, A. Tannenbaum, S. W. Zucker. Hamilton-Jacobi Skeletons. International Journal of Computer Vision 48(3), pp. 215–231, 2002.</li>
+<li>M. Breuß, J. Buhl, A. Mansouri Yarahmadi, M. Bambach, P. Peter. A Simple Approach to Stiffness Enhancement of a Printable Shape by Hamilton-Jacobi Skeletonization. Procedia Manufacturing 47, pp. 1190–1196, 2020. <a href="https://doi.org/10.1016/j.promfg.2020.04.147" target="_blank" rel="noopener">doi:10.1016/j.promfg.2020.04.147</a></li>
+<li>P. Peter, M. Breuß. Refined Homotopic Thinning Algorithms and Quality Measures for Skeletonisation Methods. In: Innovations for Shape Analysis, pp. 77–92, Springer, 2013.</li>
+</ol>
+</div>
+</details>
+
+<details class="part" id="clouds">
+<summary><span class="num">5</span><span class="ttl"><b>Cloud detection in Sentinel-2 images</b><span class="tags"><span>remote sensing</span><span>explainable</span><span>t-SNE</span></span></span><span class="chev" aria-hidden="true">▶</span></summary>
+<div class="body">
+<p>In contrast to AI-based methods, we devised a very quick, explainable and canonical approach to detect clouds in optical remote sensing images, using the multi-spectral images of Sentinel-2.</p>
+<p>The dataset PASTIS [1] has $2433$ patches of one square kilometre (see below), each of size $128\times 128$, taken from metropolitan France. For each patch, a sequence of satellite observations is assembled into a four-dimensional spatio-temporal tensor.</p>
+<figure><div class="row thumbs">
+<img src="Figs/0__S2_20000.png" loading="lazy" alt=""><img src="Figs/0__S2_20001.png" loading="lazy" alt=""><img src="Figs/1__S2_10022.png" loading="lazy" alt=""><img src="Figs/1__S2_10025.png" loading="lazy" alt=""><img src="Figs/0__S2_20002.png" loading="lazy" alt=""><img src="Figs/0__S2_20003.png" loading="lazy" alt=""><img src="Figs/1__S2_10019.png" loading="lazy" alt=""><img src="Figs/0__S2_20004.png" loading="lazy" alt=""><img src="Figs/1__S2_10007.png" loading="lazy" alt=""><img src="Figs/0__S2_20005.png" loading="lazy" alt=""><img src="Figs/1__S2_10013.png" loading="lazy" alt="">
+</div><figcaption>Sample PASTIS patches.</figcaption></figure>
+<p>We use only one band for now, but fusing other useful spectral bands can give a more effective method. We took a subset of PASTIS and visualised it in two dimensions with t-SNE [2]. The dimensionally reduced images separate clearly:</p>
+<figure><img src="Figs/t-SNEResults.png" width="400" loading="lazy" alt="t-SNE clusters of PASTIS patches"></figure>
+<p>Below are samples from each cluster: clouds (first row) and agricultural parcels and water (second row).</p>
+<figure><div class="row mid"><img src="Figs/0__S2_20000.png" loading="lazy" alt="Cloud patch"><img src="Figs/0__S2_20003.png" loading="lazy" alt="Cloud patch"><img src="Figs/0__S2_20010.png" loading="lazy" alt="Cloud patch"></div></figure>
+<figure><div class="row mid"><img src="Figs/1__S2_10007.png" loading="lazy" alt="Parcel patch"><img src="Figs/1__S2_10013.png" loading="lazy" alt="Parcel patch"><img src="Figs/1__S2_10014.png" loading="lazy" alt="Parcel patch"></div></figure>
+<h3>References</h3>
+<ol class="refs">
+<li>V. Sainte Fare Garnot, L. Landrieu. Panoptic segmentation of satellite image time series with convolutional temporal attention networks. ICCV, 2021.</li>
+<li>T. T. Cai, R. Ma. Theoretical foundations of t-SNE for visualizing high-dimensional clustered data, 2022.</li>
+</ol>
+</div>
+</details>
+
+<details class="part" id="sfs">
+<summary><span class="num">6</span><span class="ttl"><b>The convex / concave ambiguity in shape from shading</b><span class="tags"><span>3D reconstruction</span><span>PDEs</span></span></span><span class="chev" aria-hidden="true">▶</span></summary>
+<div class="body">
+<figure><div class="row"><img src="Figs/22.png.png" width="400" loading="lazy" alt="Convex hemisphere"><img src="Figs/23.png" width="400" loading="lazy" alt="Concave hemisphere"></div></figure>
+<p>The convex hemisphere $u(x,y)=-\sqrt{R^2-x^2-y^2}$ (left) and the concave hemisphere $u(x,y)=+\sqrt{R^2-x^2-y^2}$ (right), each with an arbitrarily chosen point $\left(x_1,y_1,u(x_1,y_1)\right)$ in the third quarter on its surface. An orthographic camera looks from infinity along the positive $z$ axis and observes the same angle $\theta$ between the reflected light and the corresponding normals $(\nabla u, 1)$ at the chosen points. If the surface is Lambertian, the reflected irradiance from the convex and the concave surface at $\left(x_1,y_1,u(x_1,y_1)\right)$ is the same, so it is ambiguous which geometry the surface has at that point [1].</p>
+<h3>References</h3>
+<ol class="refs">
+<li>M. Breuß, A. Mansouri Yarahmadi, D. W. Cunningham. The Convex-Concave Ambiguity in Perspective Shape from Shading. Proceedings of the OAGM Workshop on Medical Image Analysis, 2018.</li>
+</ol>
+</div>
+</details>
+
+<details class="part" id="email">
+<summary><span class="num">7</span><span class="ttl"><b>E-mail summarization with LLMs and C#</b><span class="tags"><span>LLM</span><span>Ollama</span><span>C# GUI</span></span></span><span class="chev" aria-hidden="true">▶</span></summary>
+<div class="body">
+<p>We used the Enron e-mail dataset, which contains about 500,000 e-mails written by employees of the Enron Corporation [1]. We developed a GUI in C# and used Ollama in the background to run open-source large language models. The user sees a list of e-mails and can let an LLM write a short summary of each e-mail body.</p>
+<figure><img src="Figs/AutoEmail-2.png" width="800" loading="lazy" alt="C# GUI with e-mail list and LLM summary"></figure>
+<p>The application is very useful when a user must read a large volume of e-mails every day.</p>
+<h3>References</h3>
+<ol class="refs">
+<li><a href="https://www.cs.cmu.edu/~./enron/" target="_blank" rel="noopener">Enron e-mail dataset, CMU</a></li>
+</ol>
+</div>
+</details>
+
+<footer>© Ashkan Mansouri Yarahmadi · <a href="https://github.com/ashe-many/Insight-Gallery">Source on GitHub</a></footer>
+</div>
+
+<script>
+  const parts = [...document.querySelectorAll('details.part')];
+  document.getElementById('openAll').onclick = () => parts.forEach(d => d.open = true);
+  document.getElementById('closeAll').onclick = () => parts.forEach(d => d.open = false);
+  function openHash() {
+    const d = location.hash && document.getElementById(location.hash.slice(1));
+    if (d && d.tagName === 'DETAILS') { d.open = true; d.scrollIntoView({ block: 'start' }); }
+  }
+  addEventListener('hashchange', openHash);
+  openHash();
+  addEventListener('DOMContentLoaded', () => {
+    if (window.renderMathInElement) renderMathInElement(document.body, {
+      delimiters: [{ left: '$', right: '$', display: false }], throwOnError: false
+    });
+  });
+</script>
+</body>
+</html>
