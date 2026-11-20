@@ -111,6 +111,31 @@ by means of a starting powder containing partly spherical pure elements and ferr
 Procedia CIRP. 94, pp. 46–51 (2020)
 
 
+##   Stiffer 3D-printed parts by Hamilton-Jacobi skeletonization
+
+How can we make a printed part stiffer without designing the inner ribs by hand? Our idea is to let the geometry of the shape decide. We compute the distance of each pixel to the boundary and take the Hamilton-Jacobi skeleton of the shape [1, 3], i.e. the thin lines in the middle of the shape. Merging this skeleton with the shape boundary gives a printable support structure. The method is practically parameter-free [2].
+
+Below: (a) a shape, (b) its distance map (bright = far from the boundary), (c) its skeleton and (d) the printable structure (skeleton + boundary).
+<p align="center">
+  <img src="Figs/HJSkel_steps.png" width="400">
+</p>
+
+We applied it to a corner knot of a machine frame. The left figure shows the computed rib structure; the right one shows the same knot printed in metal. FEM simulation in Abaqus showed that the knot works like a linear axis with a spring: it carries 100 N in x and y without plastic deformation, while it stays almost fixed in the guiding direction.
+<p align="center">
+  <img src="Figs/HJSkel_structure.png" width="320">
+  <img src="Figs/HJSkel_printed.png" width="320">
+</p>
+
+Figures from [2], open access under the [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) license.
+
+### References
+[1] K. Siddiqi, S. Bouix, A. Tannenbaum, S. W. Zucker. Hamilton-Jacobi Skeletons. International Journal of Computer Vision, 48(3):215–231, 2002.
+
+[2] M. Breuß, J. Buhl, A. Mansouri Yarahmadi, M. Bambach, P. Peter. A Simple Approach to Stiffness Enhancement of a Printable Shape by Hamilton-Jacobi Skeletonization. Procedia Manufacturing, 47:1190–1196, 2020. https://doi.org/10.1016/j.promfg.2020.04.147
+
+[3] P. Peter, M. Breuß. Refined Homotopic Thinning Algorithms and Quality Measures for Skeletonisation Methods. In: Innovations for Shape Analysis, pp. 77–92, Springer, 2013.
+
+
 ## Cloud detection
 
 In contrast to AI based methods, we opt to devised a very quick, explainable and canonical approach to detect cloud existence based on the optical remote sensing images provided by multi-spectral images obtianed by Sentinel-2. 
