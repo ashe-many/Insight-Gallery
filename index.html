@@ -224,7 +224,7 @@
 <div class="eq">$$f_c \;\sim\; \int_0^T |W(t)|\,dt \;\sim\; \int_0^T |\ddot x(t)|\,dt ,$$</div>
 <p>which is smallest for $\ddot x = 0$, i.e. constant velocity. Friction $F_{\mathrm{friction}} = \eta\, m_c\, g$ needs a constant acceleration, and the air resistance $F_{\mathrm{air}} \sim \dot x^2$ is minimised by</p>
 <div class="eq">$$\min_x \int_0^T \dot x(t)^2\,dt \quad \text{s.t.} \quad x(0)=s_0,\; x(T)=s_T ,$$</div>
-<p>whose optimality condition $2\dot v = 0$ again asks for constant velocity. So the fuel-saving way to drive is a constant acceleration, $\dot a = \dddot x = 0$: an energy-efficient driver keeps the <i>jerk</i> $|\dddot x|$ small.</p>
+<p>whose optimality condition $2\dot v = 0$ again asks for constant velocity. So the fuel-saving way to drive is a constant acceleration, $\dot a = \overset{\cdot\cdot\cdot}{x} = 0$: an energy-efficient driver keeps the <i>jerk</i> $|\overset{\cdot\cdot\cdot}{x}|$ small.</p>
 <h3>The robust feature $\omega$</h3>
 <p>For each movement pattern $\{T,P\}$ (time stamps and positions) we compute the jerk values $j_{\{T,P\}}$ by finite differences and define</p>
 <div class="eq">$$\omega\big(\{T,P\}\big) = \exp\!\left(-\frac{1}{\sqrt{\sigma\big(j_{\{T,P\}}\big)}}\right),$$</div>
