@@ -40,6 +40,13 @@
   .ttl b { display: block; font-size: 19px; line-height: 1.3; }
   .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
   .tags span { font: 12px var(--mono); color: var(--muted); background: var(--accent-soft); border: 1px solid var(--line); border-radius: 6px; padding: 1px 7px; }
+  .peek { flex: none; width: 150px; height: 64px; border-radius: 8px; overflow: hidden; background: #fff;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 45%); mask-image: linear-gradient(to right, transparent, #000 45%); }
+  .peek img { width: 100%; height: 100%; object-fit: cover; display: block; opacity: .45; filter: saturate(.6) blur(.6px); transform: scale(1.04); transition: opacity .25s, filter .25s, transform .25s; }
+  details.part > summary:hover .peek img { opacity: .9; filter: none; transform: scale(1.1); }
+  details.part[open] .peek { display: none; }
+  @media (max-width: 560px) { .peek { width: 84px; height: 52px; } }
+  @media (prefers-reduced-motion: reduce) { .peek img { transition: none; } }
   .chev { flex: none; color: var(--muted); transition: transform .2s; }
   details.part[open] .chev { transform: rotate(90deg); }
   .body { padding: 6px 22px 20px; }
@@ -76,7 +83,7 @@
 </div>
 
 <details class="part" id="e-lake">
-<summary><span class="num">1</span><span class="ttl"><b>E-Lake: watching swimmers with a drone</b><span class="tags"><span>3D simulation</span><span>Mask R-CNN</span><span>Qt / C++</span></span></span><span class="chev" aria-hidden="true">▶</span></summary>
+<summary><span class="num">1</span><span class="ttl"><b>E-Lake: watching swimmers with a drone</b><span class="tags"><span>3D simulation</span><span>Mask R-CNN</span><span>Qt / C++</span></span></span><span class="peek" aria-hidden="true"><img src="Figs/thumbs/e-lake.jpg" alt="" loading="lazy"></span><span class="chev" aria-hidden="true">▶</span></summary>
 <div class="body">
 <p>Let us imagine a stormy day where swimmers decide to swim in a lake. We need to watch them in case they need help. We do it with a drone that always locates the swimmers and checks if their behaviour is normal or if they need help.</p>
 <p>But data collection is hard here. Finding a stormy lake and people who are willing to swim in it is not always possible. So let us build an electronic lake (E-Lake)! First we need a texture of stormy water. We use a free texture file (thanks to Jorge Vasconez for making it available):</p>
@@ -102,7 +109,7 @@
 </details>
 
 <details class="part" id="temperature">
-<summary><span class="num">2</span><span class="ttl"><b>Temperature prediction in 3D printing</b><span class="tags"><span>laser powder-bed fusion</span><span>TSP</span><span>PDE simulation</span><span>LSTM</span></span></span><span class="chev" aria-hidden="true">▶</span></summary>
+<summary><span class="num">2</span><span class="ttl"><b>Temperature prediction in 3D printing</b><span class="tags"><span>laser powder-bed fusion</span><span>TSP</span><span>PDE simulation</span><span>LSTM</span></span></span><span class="peek" aria-hidden="true"><img src="Figs/thumbs/temperature.jpg" alt="" loading="lazy"></span><span class="chev" aria-hidden="true">▶</span></summary>
 <div class="body">
 <p>Our aim was to simulate the movement of the laser nozzle during printing in laser powder-bed fusion (LPBF) [1]. A controlled nozzle movement lets us predict the temperature gradient during printing, so that the final product does not deform because of an uneven temperature distribution across the printing board.</p>
 <p>To steer the nozzle, one can first use a predefined trajectory: row-wise, zig-zag or square-based, as shown below.</p>
@@ -132,7 +139,7 @@
 </details>
 
 <details class="part" id="skeleton">
-<summary><span class="num">3</span><span class="ttl"><b>Stiffer 3D-printed parts by Hamilton-Jacobi skeletonization</b><span class="tags"><span>geometry</span><span>skeletons</span><span>FEM</span><span>metal printing</span></span></span><span class="chev" aria-hidden="true">▶</span></summary>
+<summary><span class="num">3</span><span class="ttl"><b>Stiffer 3D-printed parts by Hamilton-Jacobi skeletonization</b><span class="tags"><span>geometry</span><span>skeletons</span><span>FEM</span><span>metal printing</span></span></span><span class="peek" aria-hidden="true"><img src="Figs/thumbs/skeleton.jpg" alt="" loading="lazy"></span><span class="chev" aria-hidden="true">▶</span></summary>
 <div class="body">
 <p>How can we make a printed part stiffer without designing the inner ribs by hand? Our idea is to let the geometry of the shape decide. We compute the distance of each pixel to the boundary and take the Hamilton-Jacobi skeleton of the shape [1, 3], i.e. the thin lines in the middle of the shape. Merging this skeleton with the shape boundary gives a printable support structure. The method is practically parameter-free [2].</p>
 <figure><img src="Figs/HJSkel_steps.png" width="420" loading="lazy" alt="Shape, distance map, skeleton and printable structure">
@@ -151,7 +158,7 @@
 </details>
 
 <details class="part" id="clouds">
-<summary><span class="num">4</span><span class="ttl"><b>Cloud detection in Sentinel-2 images</b><span class="tags"><span>remote sensing</span><span>explainable</span><span>t-SNE</span></span></span><span class="chev" aria-hidden="true">▶</span></summary>
+<summary><span class="num">4</span><span class="ttl"><b>Cloud detection in Sentinel-2 images</b><span class="tags"><span>remote sensing</span><span>explainable</span><span>t-SNE</span></span></span><span class="peek" aria-hidden="true"><img src="Figs/thumbs/clouds.jpg" alt="" loading="lazy"></span><span class="chev" aria-hidden="true">▶</span></summary>
 <div class="body">
 <p>In contrast to AI-based methods, we devised a very quick, explainable and canonical approach to detect clouds in optical remote sensing images, using the multi-spectral images of Sentinel-2.</p>
 <p>The dataset PASTIS [1] has $2433$ patches of one square kilometre (see below), each of size $128\times 128$, taken from metropolitan France. For each patch, a sequence of satellite observations is assembled into a four-dimensional spatio-temporal tensor.</p>
@@ -172,7 +179,7 @@
 </details>
 
 <details class="part" id="yolo-factory">
-<summary><span class="num">5</span><span class="ttl"><b>YOLO in an Industry 4.0 model factory</b><span class="tags"><span>YOLOv3 / YOLOv5</span><span>data augmentation</span><span>Industry 4.0</span></span></span><span class="chev" aria-hidden="true">▶</span></summary>
+<summary><span class="num">5</span><span class="ttl"><b>YOLO in an Industry 4.0 model factory</b><span class="tags"><span>YOLOv3 / YOLOv5</span><span>data augmentation</span><span>Industry 4.0</span></span></span><span class="peek" aria-hidden="true"><img src="Figs/thumbs/yolo-factory.jpg" alt="" loading="lazy"></span><span class="chev" aria-hidden="true">▶</span></summary>
 <div class="body">
 <p>Can a camera follow the work pieces through a factory, even when the light, focus or image quality changes? We studied this question on a Fischertechnik learning factory with five modules: sorting machine, oven, milling machine, high-bay warehouse and vacuum gripper [1].</p>
 <figure><div class="row"><img src="Figs/YOLO_factory.jpg" width="330" loading="lazy" alt="Fischertechnik factory model with its five modules"><img src="Figs/YOLO_pieces.jpg" width="330" loading="lazy" alt="Red, blue and white work pieces"></div>
@@ -191,7 +198,7 @@
 </details>
 
 <details class="part" id="sfs">
-<summary><span class="num">6</span><span class="ttl"><b>The convex / concave ambiguity in shape from shading</b><span class="tags"><span>3D reconstruction</span><span>PDEs</span><span>eikonal equation</span></span></span><span class="chev" aria-hidden="true">▶</span></summary>
+<summary><span class="num">6</span><span class="ttl"><b>The convex / concave ambiguity in shape from shading</b><span class="tags"><span>3D reconstruction</span><span>PDEs</span><span>eikonal equation</span></span></span><span class="peek" aria-hidden="true"><img src="Figs/thumbs/sfs.jpg" alt="" loading="lazy"></span><span class="chev" aria-hidden="true">▶</span></summary>
 <div class="body">
 <p>Shape from shading (SFS) recovers the 3D shape of a surface from a single image, using only how bright each point appears. In the classic setup of Horn, with an orthographic camera and light from far away, there is a famous problem: a mound seen from above can look exactly like a cavity of the same form.</p>
 <figure><div class="row"><img src="Figs/22.png.png" width="400" loading="lazy" alt="Convex hemisphere"><img src="Figs/23.png" width="400" loading="lazy" alt="Concave hemisphere"></div></figure>
@@ -211,7 +218,7 @@
 </details>
 
 <details class="part" id="gps-driving">
-<summary><span class="num">7</span><span class="ttl"><b>Energy-efficient driving styles from GPS logs alone</b><span class="tags"><span>clustering</span><span>feature design</span><span>noisy real-world data</span></span></span><span class="chev" aria-hidden="true">▶</span></summary>
+<summary><span class="num">7</span><span class="ttl"><b>Energy-efficient driving styles from GPS logs alone</b><span class="tags"><span>clustering</span><span>feature design</span><span>noisy real-world data</span></span></span><span class="peek" aria-hidden="true"><img src="Figs/thumbs/gps-driving.jpg" alt="" loading="lazy"></span><span class="chev" aria-hidden="true">▶</span></summary>
 <div class="body">
 <p>The driving style has a large effect on fuel consumption. A hybrid car that knows how its driver drives could use its electric engine more efficiently. But special sensors are expensive, so we asked: can we tell calm from racy drivers using only GPS positions, which every navigation system records [1]?</p>
 <p>From positions over time we get velocity, acceleration and the <i>jerk</i>, the change of acceleration. A calm driver changes speed smoothly, a racy driver abruptly. The difficulty is that real GPS logs are noisy, incomplete and inconsistent, and a single bad position creates a huge jerk:</p>
@@ -244,7 +251,7 @@
 </details>
 
 <details class="part" id="email">
-<summary><span class="num">8</span><span class="ttl"><b>E-mail summarization with LLMs and C#</b><span class="tags"><span>LLM</span><span>Ollama</span><span>C# GUI</span></span></span><span class="chev" aria-hidden="true">▶</span></summary>
+<summary><span class="num">8</span><span class="ttl"><b>E-mail summarization with LLMs and C#</b><span class="tags"><span>LLM</span><span>Ollama</span><span>C# GUI</span></span></span><span class="peek" aria-hidden="true"><img src="Figs/thumbs/email.jpg" alt="" loading="lazy"></span><span class="chev" aria-hidden="true">▶</span></summary>
 <div class="body">
 <p>We used the Enron e-mail dataset, which contains about 500,000 e-mails written by employees of the Enron Corporation [1]. We developed a GUI in C# and used Ollama in the background to run open-source large language models. The user sees a list of e-mails and can let an LLM write a short summary of each e-mail body.</p>
 <figure><img src="Figs/AutoEmail-2.png" width="800" loading="lazy" alt="C# GUI with e-mail list and LLM summary"></figure>
